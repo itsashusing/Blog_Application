@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block body_block %}
+<html lang="en">
+
+<head>
+    <title>Bunty Blog</title>
+</head>
+
+<body>
+    {% if user.is_authenticated %}
+    <div class="jumbotron">
+
+            <div class="container d-flex">
+                <div>
+                    <table border="2px" width="400">
+                        <tr>
+                            <th>Name:</th>
+                            <td align="center">{{user.first_name | title}} {{user.last_name }} </td>
+                        </tr>
+                        <tr>
+                            <th>Bio:</th>
+                            <td align="center">{{user.userprofile.bio}} </td>
+                        </tr>
+                        <tr>
+                            <th>Username:</th>
+                            <td align="center">{{user.username}} </td>
+                        </tr>
+                        <tr>
+                            <th>Email:</th>
+                            <td align="center">{{user.email}} </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="ml-auto">
+                    <img class="rounded-circle  " src="{{user.userprofile.profile_pic.url}}" alt="No Profile Pic"
+                        width="200" height="200">
+                </div>
+            </div>
+
+            <div class="container my-2">
+                <a class="btn btn-warning btn-sm" href="/updateuserprofile/{{user.id}}">Edit Bio</a>
+            </div>
+
+
+    </div>
+
+    {% else %}
+    <div class="jumbotron">
+        <H1>First login to view to this page.</H1>
+    </div>
+    {% endif %}
+
+</body>
+{% endblock %}
+
+
+</html>

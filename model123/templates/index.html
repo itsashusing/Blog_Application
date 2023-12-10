@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block body_block %}
+<html lang="en">
+
+<head>
+    <title>New Blog</title>
+</head>
+
+<body>
+    <div class="jumbotron">
+        <ul>
+            {% for post in posts %}
+            <li class="d-flex">
+                <div><a href="/post/{{post.id}}">
+                        <h3 class="display-5">{{post.title |capfirst }} </h3>
+                    </a></div>
+                {% if user.id == post.author.id %}
+                <div class="ml-4"> <a class=" btn btn-danger btn-sm" href="{% url 'delete_post' post.id %}">Delete</a>
+                </div>
+                {% endif %}
+            </li>
+            <hr class="my-4">
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
+{% endblock %}
+
+
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block body_block %}
+<html lang="en">
+
+<head>
+    <title>Bunty Blog</title>
+</head>
+
+<body>
+    <div class="jumbotron">
+        {% if user.is_authenticated %}
+        <h2 style="text-align: center;">{{post.title | title}} </h2>
+        <div class="container">
+            <!-- Like Button Start -->
+            <div class="d-flex flex-row">
+                <form action="/like/{{post.id}}" method="POST">
+                    {% csrf_token %}
+                    <!-- unlike logic start -->
+                    {% if liked %}
+                    <button name="post_id" value="{{post.id}}" type="submit" class="btn btn-danger btn-sm">Unlike
+                    </button>
+                    {% else %}
+                    <button name="post_id" value="{{post.id}}" type="submit" class="btn btn-primary btn-sm">Like -
+                        {{post.total_likes}} </button>
+                    {% endif %}
+                </form>
+                <a class="btn btn-primary btn-sm ml-2" href="#12">Comments</a>
+                {% if user.id == post.author.id %}
+                <a class="btn btn-warning btn-sm ml-2" href="/editpost/{{post.id}}">Edit Post</a>
+                {% endif %}
+            </div>
+            <!-- Like Button End  -->
+            {% if liked %}
+            <p style="font-family: serif; ">You liked this blog <br>Total likes: {{post.total_likes}}</p>
+            {% endif %}
+
+            <hr>
+            <p>{{post.body}} </p>
+        </div>
+
+        <div class="card mb-3">
+            <div class="row no-gutters">
+                <div class="col-md-2">
+                    <img class="rounded-circle" src="{{post.author.userprofile.profile_pic.url}}" alt="No profile_pic" width="200" height="150">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Post By: {{post.author.first_name | title}} {{post.author.last_name | title}}</h5>
+                        <p class="card-text"> <span style="font-weight: bold;">Bio:</span>  {{post.author.userprofile.bio | title}}</p>
+                        <p class="card-text"><small class="text-muted"> Social Media Links: 
+                            <a href="{{post.author.userprofile.fb_url}}">Facebook</a>
+                            | <a href="{{post.author.userprofile.insta_url}}" >Instagram</a></small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            {% if comments %}
+            <h3>Comments :</h3>
+            <div id="12" class=" d-flex">
+                <div class=" bg-light " , style="width: 100%; ">
+                    <ol style="text-align: left;">
+                        {% for comment in comments %}
+
+                        {% if comment.post_id == post.id %}
+                        <li> {{comment.comment_text | safe}} <span style="font-weight: bold;">By: {{post.author.first_name}} </span></li>
+                        <hr>
+                        {% endif %}
+                        {% endfor %}
+                    </ol>
+                </div>
+                {% endif %}
+                <div class="container ">
+                    <form method="post">
+                        <h1>Add Comment:</h1>
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <div class="d-flex">
+                            <a class="btn btn-primary" href="/">Home</a>
+                            <input class="btn btn-success ml-2" type="submit" value="Add comment">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="container">
+            <h2>First Login to visit this page.</h2>
+        </div>
+        {% endif %}
+    </div>
+
+</body>
+<script>
+    let post_id = '{{post.id}}'
+    document.getElementById('id_post').value = post_id
+</script>
+{% endblock %}
+
+
+</html>

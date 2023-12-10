@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block body_block %}
+<html lang="en">
+
+<head>
+    <title>Bunty Blog</title>
+</head>
+
+<body>
+    <div class="jumbotron">
+
+        <div class="container " style="width: 50rem;">
+            <div align="center">
+                <h1>Sign-Up to Shaily.com</h1>
+            </div>
+            <hr>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input class="btn btn-primary form-control" type="submit" value="SignUp">
+            </form>
+        </div>
+    </div>
+
+</body>
+{% endblock %}
+
+
+</html>
